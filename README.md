@@ -5,47 +5,47 @@ A fully local agentic Retrieval-Augmented Generation (RAG) system with a Chainli
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    INGESTION PIPELINE                     │
-│                                                          │
-│  documents/                                              │
-│    │                                                     │
-│    ├── .pdf, .png, .jpg  ──→  liteparse (native)        │
-│    ├── .docx, .doc       ──→  python-docx                │
-│    ├── .csv, .tsv        ──→  plain text                 │
-│    ├── .xlsx, .xls       ──→  openpyxl                   │
-│    ├── .pptx, .ppt       ──→  python-pptx                │
-│    ├── .md               ──→  Chonkie MarkdownChef       │
-│    └── .txt              ──→  Chonkie TextChef           │
-│    │                                                     │
-│    ▼  Chonkie SemanticChunker (2048 tokens, threshold 0.5)│
-│    │                                                     │
-│    ▼  SentenceTransformerEmbedder (all-MiniLM-L6-v2)     │
-│    │                                                     │
-│    ▼  LanceDB (384-dim vectors + FTS index)              │
-│    │                                                     │
-│    ▼  vectorized.json (SHA-256 tracking)                 │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                       INGESTION PIPELINE                         │
+│                                                                  │
+│  documents/                                                      │
+│    │                                                             │
+│    ├── .pdf, .png, .jpg  ──→  liteparse (native)                │
+│    ├── .docx, .doc       ──→  python-docx                       │
+│    ├── .csv, .tsv        ──→  plain text                        │
+│    ├── .xlsx, .xls       ──→  openpyxl                          │
+│    ├── .pptx, .ppt       ──→  python-pptx                       │
+│    ├── .md               ──→  Chonkie MarkdownChef              │
+│    └── .txt              ──→  Chonkie TextChef                  │
+│    │                                                             │
+│    ▼  Chonkie SemanticChunker (2048 tokens, threshold 0.5)      │
+│    │                                                             │
+│    ▼  SentenceTransformerEmbedder (all-MiniLM-L6-v2)            │
+│    │                                                             │
+│    ▼  LanceDB (384-dim vectors + FTS index)                     │
+│    │                                                             │
+│    ▼  vectorized.json (SHA-256 tracking)                        │
+└──────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────┐
-│                    CHAT PIPELINE                          │
-│                                                          │
-│  Chainlit UI ──→ Agno Agent                              │
-│                      │                                   │
-│                      ├── search_knowledge=True           │
-│                      │   (agent decides when to search)  │
-│                      │                                   │
-│                      ▼  LanceDB hybrid search            │
-│                      │   (vector + keyword FTS)          │
-│                      │                                   │
-│                      ▼  OpenRouter LLM                   │
-│                      │   (deepseek/deepseek-v4-flash)    │
-│                      │                                   │
-│                      ▼  Grounded response                │
-│                                                          │
-│  Traces: OpenTelemetry → SQLite (sessions.db)            │
-│  Chat log: data/chat_logs/interactions.jsonl             │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                         CHAT PIPELINE                            │
+│                                                                  │
+│  Chainlit UI ──→ Agno Agent                                      │
+│                      │                                           │
+│                      ├── search_knowledge=True                   │
+│                      │   (agent decides when to search)          │
+│                      │                                           │
+│                      ▼  LanceDB hybrid search                    │
+│                      │   (vector + keyword FTS)                  │
+│                      │                                           │
+│                      ▼  OpenRouter LLM                           │
+│                      │   (deepseek/deepseek-v4-flash)            │
+│                      │                                           │
+│                      ▼  Grounded response                        │
+│                                                                  │
+│  Traces: OpenTelemetry → SQLite (sessions.db)                    │
+│  Chat log: data/chat_logs/interactions.jsonl                     │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ## Key Design Decisions
