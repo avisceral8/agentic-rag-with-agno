@@ -6,29 +6,29 @@ A fully local agentic Retrieval-Augmented Generation (RAG) system with a Chainli
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                       INGESTION PIPELINE                         │
+│                        INGESTION PIPELINE                        │
 │                                                                  │
 │  documents/                                                      │
 │    │                                                             │
-│    ├── .pdf, .png, .jpg  ──→  liteparse (native)                │
-│    ├── .docx, .doc       ──→  python-docx                       │
-│    ├── .csv, .tsv        ──→  plain text                        │
-│    ├── .xlsx, .xls       ──→  openpyxl                          │
-│    ├── .pptx, .ppt       ──→  python-pptx                       │
-│    ├── .md               ──→  Chonkie MarkdownChef              │
-│    └── .txt              ──→  Chonkie TextChef                  │
+│    ├── .pdf, .png, .jpg  ──→  liteparse (native)                 │
+│    ├── .docx, .doc       ──→  python-docx                        │
+│    ├── .csv, .tsv        ──→  plain text                         │
+│    ├── .xlsx, .xls       ──→  openpyxl                           │
+│    ├── .pptx, .ppt       ──→  python-pptx                        │
+│    ├── .md               ──→  Chonkie MarkdownChef               │
+│    └── .txt              ──→  Chonkie TextChef                   │
 │    │                                                             │
-│    ▼  Chonkie SemanticChunker (2048 tokens, threshold 0.5)      │
+│    ▼  Chonkie SemanticChunker (2048 tokens, threshold 0.5)       │
 │    │                                                             │
-│    ▼  SentenceTransformerEmbedder (all-MiniLM-L6-v2)            │
+│    ▼  SentenceTransformerEmbedder (all-MiniLM-L6-v2)             │
 │    │                                                             │
-│    ▼  LanceDB (384-dim vectors + FTS index)                     │
+│    ▼  LanceDB (384-dim vectors + FTS index)                      │
 │    │                                                             │
-│    ▼  vectorized.json (SHA-256 tracking)                        │
+│    ▼  vectorized.json (SHA-256 tracking)                         │
 └──────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────┐
-│                         CHAT PIPELINE                            │
+│                          CHAT PIPELINE                           │
 │                                                                  │
 │  Chainlit UI ──→ Agno Agent                                      │
 │                      │                                           │
